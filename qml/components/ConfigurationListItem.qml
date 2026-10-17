@@ -23,6 +23,10 @@ ListItem {
         }
     }
 
+    function removeFromFavorites() {
+        favorites.value = favorites.value.filter(function (el) { return el !== key })
+    }
+
     Icon {
         id: icon
         x: Theme.horizontalPageMargin
@@ -61,7 +65,7 @@ ListItem {
                     if (!favorites.value) favorites.value = []
 
                     if (favorite)
-                        favorites.value = favorites.value.filter(function (el) { return el !== key })
+                        remorseAction(qsTr("Removed from Favorites"), removeFromFavorites)
                     else
                         favorites.value = favorites.value.concat(key)
                 }

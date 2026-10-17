@@ -58,7 +58,7 @@ Page {
             else {
                 var existingIndex = keysModel.find(currentKey)
 
-                tempValue.key = path + currentKey
+                tempValue.key = page.path + currentKey
                 tempValue.sync()
                 if (typeof tempValue.value === 'undefined') {
                     // removed value

@@ -62,6 +62,11 @@ Dialog {
                 text: qsTr("Remove")
                 onClicked: pageStack.previousPage().removeKey(key)
             }
+            MenuItem {
+                visible: writable
+                text: qsTr("Save")
+                onClicked: configurationValue.value = value
+            }
         }
 
         Column {
@@ -146,12 +151,35 @@ Dialog {
                         width: parent.width
                         bottomPadding: Theme.paddingLarge
 
+                        function addListValue() {
+                            var value
+                            switch (listTypeComboBox.currentIndex) {
+                            case 0:
+                                value = false
+                                break
+                            case 1:
+                                value = 0
+                                break
+                            case 2:
+                                value = ''
+                                break
+                            default:
+                                return
+                            }
+                            page.value = page.value.concat(value)
+                        }
+
                         ComboBox {
                             id: listTypeComboBox
                             label: qsTr("List type")
                             enabled: writable
                             currentIndex: page.value && page.value.length ? getType(page.value[0]) : -1
                             menu: TypeContextMenu { isList: true }
+                            onCurrentIndexChanged:
+                                if (!page.value || !page.value.length || !page.value[0]) {
+                                    page.value = []
+                                    addListValue()
+                                }
                         }
 
                         Repeater {
@@ -180,23 +208,7 @@ Dialog {
                             }
                             icon.source: 'image://theme/icon-splus-add'
                             text: qsTr("Add")
-                            onClicked: {
-                                var value
-                                switch (listTypeComboBox.currentIndex) {
-                                case 0:
-                                    value = false
-                                    break
-                                case 1:
-                                    value = 0
-                                    break
-                                case 2:
-                                    value = ''
-                                    break
-                                default:
-                                    return
-                                }
-                                page.value = page.value.concat(value)
-                            }
+                            onClicked: addListValue()
                         }
                     }
                 }

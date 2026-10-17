@@ -45,6 +45,34 @@
         <source>Editing</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value is read-only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning: the key is already used. Existing value will be overwritten</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>in %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To create the key in a subdirectory, separate the path with slashes.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditorFieldBase</name>

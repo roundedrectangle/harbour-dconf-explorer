@@ -85,16 +85,14 @@ Page {
         Behavior on opacity { FadeAnimator {} }
 
         PullDownMenu {
-            // TODO
-            visible: false
             MenuItem {
-                visible: path != '/' // do not allow deleting root (too dangerous)
+                visible: false//path != '/' // do not allow deleting root (too dangerous)
                 text: qsTr("Remove")
                 //onClicked: 0 // TODO: like in Remorse docs for fullscreen item
             }
             MenuItem {
                 text: qsTr("Create entry")
-                //onClicked: 0//pageStack.push(Qt.resolvedUrl("EditPage.qml", {create: true}))
+                onClicked: pageStack.push(Qt.resolvedUrl("EditPage.qml"), {creating: true, createPath: path})
             }
         }
 

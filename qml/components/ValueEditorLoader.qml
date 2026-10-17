@@ -42,6 +42,7 @@ Loader {
                 enabled: visible
                 icon.source: 'image://theme/icon-m-remove'
                 onClicked: textSwitch.parent.remove()
+                Component.onCompleted: console.log(parent.text, visible, writable, enabled)
             }
             rightMargin: removeButton.visible
         }

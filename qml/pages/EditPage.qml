@@ -3,18 +3,21 @@ import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
 import "../components"
 
-// TODO: decide if this should be a Dialog instead
-Page {
+Dialog {
     id: page
+    allowedOrientations: Orientation.All
 
+    property bool creating
+    property string createPath
     property alias key: configurationValue.key
-    property alias value: configurationValue.value
+    property var value: configurationValue.value
 
-    property bool writable: false
+    property bool writable
 
     ConfigurationValue {
         id: configurationValue
-        onValueChanged: if (typeof value === 'undefined') pageStack.pop()
+        property bool valueUndefined: typeof value === 'undefined'
+        onValueUndefinedChanged: if (!creating && valueUndefined) pageStack.pop()
     }
 
     function getType(value) {
@@ -37,7 +40,14 @@ Page {
         target: py
         onIsWritableReceived: if (key == page.key) page.writable = isWritable
     }
-    onKeyChanged: py.checkIsWritable(key)
+    onKeyChanged: {
+        if (key) py.checkIsWritable(key)
+        else writable = false
+    }
+
+    canAccept: writable
+    onAcceptBlocked: nonWritableLabel.active = true
+    onAccepted: configurationValue.value = value
 
     SilicaFlickable {
         anchors.fill: parent
@@ -55,11 +65,58 @@ Page {
             id: column
             width: parent.width
 
-            PageHeader {
-                id: header
-                title: qsTr("Editing")
-                description: key
-                descriptionWrapMode: Text.Wrap
+            Item {
+                width: parent.width
+                height: header.height + keyText.height
+
+                DialogHeader {
+                    id: header
+                    title: creating ? qsTr("New entry") : qsTr("Editing")
+                    acceptText: qsTr("Save")
+                }
+                Label {
+                    id: keyText
+                    anchors {
+                        top: header.bottom
+                        topMargin: -Theme.paddingMedium - Theme.paddingSmall // Move padding below the key
+                    }
+                    x: Theme.horizontalPageMargin
+                    width: parent.width - 2*x
+                    text: creating ? qsTr("in %1").arg(createPath) : key
+                    font.pixelSize: Theme.fontSizeSmall
+                    color: Theme.secondaryHighlightColor
+                    wrapMode: Text.Wrap
+                }
+            }
+
+            Label {
+                id: nonWritableLabel
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2*x
+                topPadding: Theme.paddingSmall
+                text: qsTr("Value is read-only")
+                property bool active: creating && !!key
+                visible: active && !writable
+                font.pixelSize: Theme.fontSizeMedium
+                color: Theme.errorColor
+                wrapMode: Text.Wrap
+            }
+
+            Loader {
+                width: parent.width
+                active: creating
+                Component.onCompleted: console.log(creating, active)
+                sourceComponent: Component {
+                    TextField {
+                        label: qsTr("Key")
+                        description: qsTr("To create the key in a subdirectory, separate the path with slashes.") + (configurationValue.valueUndefined ? '' : ' ' + qsTr("Warning: the key is already used. Existing value will be overwritten"))
+                        onTextChanged: {
+                            // Remove any slashes at start, and replace duplicate ones with 1
+                            var newKey = text.replace(/^\/+/, '').replace(/\/+/g, '/')
+                            page.key = newKey ? (createPath + newKey) : ''
+                        }
+                    }
+                }
             }
 
             ComboBox {
@@ -89,6 +146,7 @@ Page {
                         ComboBox {
                             id: listTypeComboBox
                             label: qsTr("List type")
+                            enabled: writable
                             currentIndex: page.value && page.value.length ? getType(page.value[0]) : -1
                             menu: TypeContextMenu { isList: true }
                         }

@@ -21,7 +21,7 @@ Dialog {
     }
 
     function getType(value) {
-        console.log(value, JSON.stringify(value), typeof value)
+        console.log("Getting type", typeof value, value, JSON.stringify(value))
         switch (typeof value) {
         case 'boolean':
             return 0
@@ -113,7 +113,6 @@ Dialog {
             Loader {
                 width: parent.width
                 active: creating
-                Component.onCompleted: console.log(creating, active)
                 sourceComponent: Component {
                     TextField {
                         label: qsTr("Key")

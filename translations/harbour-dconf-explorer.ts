@@ -15,6 +15,10 @@
         <source>Add to favorites</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Removed from Favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>

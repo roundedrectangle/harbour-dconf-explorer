@@ -15,6 +15,10 @@
         <source>Add to favorites</source>
         <translation>Добавить в избранные</translation>
     </message>
+    <message>
+        <source>Removed from Favorites</source>
+        <translation>Удалено из Избранного</translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>

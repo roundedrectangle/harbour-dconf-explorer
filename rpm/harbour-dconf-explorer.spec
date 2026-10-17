@@ -1,7 +1,7 @@
 Name:       harbour-dconf-explorer
 
 Summary:    Explore DConf
-Version:    0.1
+Version:    1.0
 Release:    1
 License:    LICENSE
 BuildArch:  noarch

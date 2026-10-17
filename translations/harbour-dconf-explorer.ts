@@ -99,6 +99,14 @@
         <source>Favorites</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Directory removed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Key removed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TypeContextMenu</name>

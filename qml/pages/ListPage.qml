@@ -9,6 +9,7 @@ Page {
 
     property string path: '/'
     property bool loading: true
+    property string removingKey
 
     ListModel {
         id: keysModel
@@ -73,8 +74,35 @@ Page {
             }
     }
 
+    function removeKey(key, isFolder) {
+        pageStack.pop()
+
+        var remorse
+        if (isFolder)
+            remorse = Remorse.popupAction(page, qsTr("Directory removed"), function() {
+                tempGroup.path = key
+                tempGroup.sync()
+                tempGroup.clear()
+            })
+        else
+            remorse = Remorse.popupAction(page, qsTr("Key removed"), function() {
+                tempValue.key = key
+                tempValue.sync()
+                tempValue.value = undefined
+            })
+
+        removingKey = Qt.binding(function() { return remorse && remorse.active ? key : '' })
+    }
+
     Component.onCompleted: py.add(path)
     Component.onDestruction: py.remove(path)
+
+    property bool empty: !loading && keysModel.count == 0 && page.status == PageStatus.Active
+    onEmptyChanged:
+        if (empty) {
+            pageStack.completeAnimation()
+            pageStack.pop()
+        }
 
     BusyLabel { running: loading }
 
@@ -86,9 +114,9 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                visible: false//path != '/' // do not allow deleting root (too dangerous)
+                visible: path != '/' // do not allow removing root (too dangerous)
                 text: qsTr("Remove")
-                //onClicked: 0 // TODO: like in Remorse docs for fullscreen item
+                onClicked: pageStack.previousPage().removeKey(path, true)
             }
             MenuItem {
                 text: qsTr("Create entry")

@@ -54,10 +54,10 @@ Dialog {
         contentHeight: column.height
 
         PullDownMenu {
-            visible: false
+            visible: !creating && writable
             MenuItem {
                 text: qsTr("Remove")
-                // TODO
+                onClicked: pageStack.previousPage().removeKey(key)
             }
         }
 

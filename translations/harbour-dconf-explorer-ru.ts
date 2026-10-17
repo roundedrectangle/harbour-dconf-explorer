@@ -99,6 +99,14 @@
         <source>Favorites</source>
         <translation>Избранные</translation>
     </message>
+    <message>
+        <source>Directory removed</source>
+        <translation>Директория удалена</translation>
+    </message>
+    <message>
+        <source>Key removed</source>
+        <translation>Запись удалена</translation>
+    </message>
 </context>
 <context>
     <name>TypeContextMenu</name>

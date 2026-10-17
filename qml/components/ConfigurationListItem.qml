@@ -7,6 +7,7 @@ ListItem {
     property bool favorite: !!favorites.value && favorites.value.indexOf(key) >= 0
 
     contentHeight: Math.max(icon.height + Theme.paddingSmall, label.height + Theme.paddingSmall, Theme.itemSizeSmall)
+    hidden: page.removingKey == key
 
     readonly property bool isFolder: key[key.length - 1] === '/'
 

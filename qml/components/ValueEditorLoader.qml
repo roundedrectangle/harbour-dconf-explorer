@@ -27,7 +27,7 @@ Loader {
         TextSwitch {
             id: textSwitch
             text: qsTr("Enabled")
-            checked: parent.value
+            checked: !!parent.value
             automaticCheck: false
             onClicked: parent.setValue(!checked)
             enabled: writable

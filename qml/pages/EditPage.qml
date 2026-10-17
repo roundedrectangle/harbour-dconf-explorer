@@ -112,7 +112,7 @@ Dialog {
                 sourceComponent: Component {
                     TextField {
                         label: qsTr("Key")
-                        description: qsTr("To create the key in a subdirectory, separate the path with slashes.") + (configurationValue.valueUndefined ? '' : ' ' + qsTr("Warning: the key is already used. Existing value will be overwritten"))
+                        description: qsTr("To create the key in a subdirectory, separate the path with slashes.") + (valueUndefined ? '' : ' ' + qsTr("Warning: the key is already used. Existing value will be overwritten"))
                         onTextChanged: {
                             // Remove any slashes at start, and replace duplicate ones with 1
                             var newKey = appWindow.normalizePath(text.replace(/^\/+/, ''))

@@ -49,6 +49,7 @@ Loader {
     Component {
         id: numberComponent
         EditorFieldBase {
+            inputMethodHints: Qt.ImhFormattedNumbersOnly
             acceptableInput: {
                 if (!text) return false
                 var n = Number(text)

@@ -6,6 +6,7 @@ TextField {
     label: qsTr("Value")
     text: parent.value
     readOnly: !writable
+    inputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase
 
     rightItem: IconButton {
         visible: !!(field.parent && field.parent.remove)

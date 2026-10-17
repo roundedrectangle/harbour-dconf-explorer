@@ -82,6 +82,21 @@
     </message>
 </context>
 <context>
+    <name>GoToPage</name>
+    <message>
+        <source>Go to…</source>
+        <translation>Перейти к…</translation>
+    </message>
+    <message>
+        <source>Go</source>
+        <translation>Перейти</translation>
+    </message>
+    <message>
+        <source>Path</source>
+        <translation>Путь</translation>
+    </message>
+</context>
+<context>
     <name>ListPage</name>
     <message>
         <source>Remove</source>
@@ -106,6 +121,18 @@
     <message>
         <source>Key removed</source>
         <translation>Запись удалена</translation>
+    </message>
+    <message>
+        <source>Go to…</source>
+        <translation>Перейти к…</translation>
+    </message>
+    <message>
+        <source>No entries</source>
+        <translation>Нет записей</translation>
+    </message>
+    <message>
+        <source>Pull down to create a new entry</source>
+        <translation>Потяните вниз, чтобы создать запись</translation>
     </message>
 </context>
 <context>

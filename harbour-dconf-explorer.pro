@@ -10,6 +10,7 @@ DISTFILES += qml/harbour-dconf-explorer.qml \
     qml/components/dconf_iface.py \
     qml/cover/CoverPage.qml \
     qml/pages/EditPage.qml \
+    qml/pages/GoToPage.qml \
     qml/pages/ListPage.qml \
     rpm/harbour-dconf-explorer.changes.in \
     rpm/harbour-dconf-explorer.changes.run.in \

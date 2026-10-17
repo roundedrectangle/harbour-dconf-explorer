@@ -30,6 +30,10 @@ ApplicationWindow {
         key: '/apps/harbour-dconf-explorer/favorites'
     }
 
+    function normalizePath(path) {
+        return path.replace(/\/{2,}/g, '/')
+    }
+
     Python {
         id: py
 

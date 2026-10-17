@@ -9,15 +9,15 @@ Dialog {
 
     property bool creating
     property string createPath
+    property bool fromGoTo
     property alias key: configurationValue.key
+    property alias path: configurationValue.key
     property var value: configurationValue.value
 
     property bool writable
 
     ConfigurationValue {
         id: configurationValue
-        property bool valueUndefined: typeof value === 'undefined'
-        onValueUndefinedChanged: if (!creating && valueUndefined) pageStack.pop()
     }
 
     function getType(value) {
@@ -44,6 +44,9 @@ Dialog {
         if (key) py.checkIsWritable(key)
         else writable = false
     }
+
+    readonly property bool valueUndefined: typeof configurationValue.value === 'undefined'
+    onValueUndefinedChanged: if (!fromGoTo && !creating && valueUndefined) pageStack.pop()
 
     canAccept: writable
     onAcceptBlocked: nonWritableLabel.active = true
@@ -112,7 +115,7 @@ Dialog {
                         description: qsTr("To create the key in a subdirectory, separate the path with slashes.") + (configurationValue.valueUndefined ? '' : ' ' + qsTr("Warning: the key is already used. Existing value will be overwritten"))
                         onTextChanged: {
                             // Remove any slashes at start, and replace duplicate ones with 1
-                            var newKey = text.replace(/^\/+/, '').replace(/\/+/g, '/')
+                            var newKey = appWindow.normalizePath(text.replace(/^\/+/, ''))
                             page.key = newKey ? (createPath + newKey) : ''
                         }
                     }

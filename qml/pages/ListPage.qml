@@ -10,6 +10,9 @@ Page {
     property string path: '/'
     property bool loading: true
     property string removingKey
+    readonly property bool empty: !loading && keysModel.count == 0
+    property bool fromGoTo
+    property bool wasAdded: !fromGoTo
 
     ListModel {
         id: keysModel
@@ -94,12 +97,12 @@ Page {
         removingKey = Qt.binding(function() { return remorse && remorse.active ? key : '' })
     }
 
-    Component.onCompleted: py.add(path)
-    Component.onDestruction: py.remove(path)
+    Component.onCompleted: if (!fromGoTo && path) py.add(path)
+    Component.onDestruction: if (path && wasAdded) py.remove(path)
 
-    property bool empty: !loading && keysModel.count == 0 && page.status == PageStatus.Active
-    onEmptyChanged:
-        if (empty) {
+    readonly property bool emptyNeedPop: !fromGoTo && empty && page.status == PageStatus.Active
+    onEmptyNeedPopChanged:
+        if (emptyNeedPop) {
             pageStack.completeAnimation()
             pageStack.pop()
         }
@@ -113,6 +116,11 @@ Page {
         Behavior on opacity { FadeAnimator {} }
 
         PullDownMenu {
+            MenuItem {
+                visible: path == '/'
+                text: qsTr("Go to…")
+                onClicked: pageStack.push(Qt.resolvedUrl("GoToPage.qml"))
+            }
             MenuItem {
                 visible: path != '/' // do not allow removing root (too dangerous)
                 text: qsTr("Remove")
@@ -161,6 +169,12 @@ Page {
         delegate: ConfigurationListItem {
             key: path + model.key
             displayKey: model.key
+        }
+
+        ViewPlaceholder {
+            enabled: empty
+            text: qsTr("No entries")
+            hintText: qsTr("Pull down to create a new entry")
         }
     }
 }

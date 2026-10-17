@@ -82,6 +82,21 @@
     </message>
 </context>
 <context>
+    <name>GoToPage</name>
+    <message>
+        <source>Go to…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ListPage</name>
     <message>
         <source>Remove</source>
@@ -105,6 +120,18 @@
     </message>
     <message>
         <source>Key removed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No entries</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pull down to create a new entry</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

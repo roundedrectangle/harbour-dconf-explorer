@@ -53,8 +53,16 @@ Dialog {
     onAccepted: configurationValue.value = value
 
     SilicaFlickable {
+        id: flickable
         anchors.fill: parent
         contentHeight: column.height
+
+        property bool scrollToBottomOnFlickEnd
+        onFlickEnded:
+            if (scrollToBottomOnFlickEnd) {
+                scrollToBottom()
+                scrollToBottomOnFlickEnd = false
+            }
 
         PullDownMenu {
             visible: !creating && writable
@@ -113,11 +121,13 @@ Dialog {
             Loader {
                 width: parent.width
                 active: creating
+                focus: true // needed to pass the focus to TextField (and inner QML TextInput)
                 sourceComponent: Component {
                     TextField {
                         label: qsTr("Key")
                         description: qsTr("To create the key in a subdirectory, separate the path with slashes.") + (valueUndefined ? '' : ' ' + qsTr("Warning: the key is already used. Existing value will be overwritten"))
                         inputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase
+                        focus: true
                         onTextChanged: {
                             // Remove any slashes at start, and replace duplicate ones with 1
                             var newKey = appWindow.normalizePath(text.replace(/^\/+/, ''))
@@ -136,8 +146,10 @@ Dialog {
             }
 
             ValueEditorLoader {
+                id: valueEditorLoader
                 type: typeComboBox.currentIndex
                 sourceComponent: type == 3 ? listComponent : implicitComponent
+                focus: true
 
                 value: page.value
                 onSetValue: {
@@ -145,15 +157,22 @@ Dialog {
                     if (page.value !== value) page.value = value
                 }
 
+                enterKeyEnabled: writable
+                enterKeyIconSource: "image://theme/icon-m-enter-accept"
+                onEnterKeyClicked: accept()
+
                 Component {
                     id: listComponent
                     Column {
+                        id: listColumn
                         width: parent.width
                         bottomPadding: Theme.paddingLarge
 
+                        property alias listType: listTypeComboBox.currentIndex
+
                         function addListValue() {
                             var value
-                            switch (listTypeComboBox.currentIndex) {
+                            switch (listType) {
                             case 0:
                                 value = false
                                 break
@@ -166,6 +185,7 @@ Dialog {
                             default:
                                 return
                             }
+                            if (listType == 1 || listType == 2) listRepeater.indexToFocus = page.value.length
                             page.value = page.value.concat(value)
                         }
 
@@ -183,9 +203,16 @@ Dialog {
                         }
 
                         Repeater {
+                            id: listRepeater
                             model: value.length
+
+                            property int indexToFocus: -1
+                            onItemAdded:
+                                if (index == indexToFocus)
+                                    item.forceActiveFocus()
+
                             delegate: ValueEditorLoader {
-                                type: listTypeComboBox.currentIndex
+                                type: listType
 
                                 value: page.value[index]
                                 onSetValue: {
@@ -197,21 +224,35 @@ Dialog {
                                 function remove() {
                                     page.value = page.value.slice(0, index).concat(page.value.slice(index + 1))
                                 }
-                            }
-                        }
 
-                        Button {
-                            visible: writable && listTypeComboBox.currentIndex >= 0
-                            anchors {
-                                horizontalCenter: parent.horizontalCenter
-                                topMargin: Theme.paddingMedium
+                                property bool needFocus
+                                function forceActiveFocus() {
+                                    if (status == Loader.Ready) {
+                                        item.forceActiveFocus()
+                                        flickable.scrollToBottomOnFlickEnd = true
+                                    } else needFocus = true
+                                }
+                                onStatusChanged: if (needFocus && (type == 1 || type == 2)) forceActiveFocus()
+
+                                property bool isLast: index == page.value.length - 1
+                                enterKeyIconSource: isLast ? "image://theme/icon-m-add" : "image://theme/icon-m-enter-next"
+                                onEnterKeyClicked:
+                                    if (isLast) listColumn.addListValue()
+                                    else listRepeater.itemAt(index + 1).forceActiveFocus()
                             }
-                            icon.source: 'image://theme/icon-splus-add'
-                            text: qsTr("Add")
-                            onClicked: addListValue()
                         }
                     }
                 }
+            }
+        }
+
+        PushUpMenu {
+            visible: writable && valueEditorLoader.type == 3
+                     && valueEditorLoader.status == Loader.Ready && valueEditorLoader.item.listType >= 0
+            quickSelect: true
+            MenuItem {
+                text: qsTr("Add")
+                onClicked: valueEditorLoader.item.addListValue()
             }
         }
     }

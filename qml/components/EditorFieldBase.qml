@@ -13,4 +13,8 @@ TextField {
         icon.source: 'image://theme/icon-splus-remove'
         onClicked: field.parent.remove()
     }
+
+    EnterKey.enabled: !!(field.parent && field.parent.enterKeyEnabled)
+    EnterKey.iconSource: field.parent ? field.parent.enterKeyIconSource || '' : ''
+    EnterKey.onClicked: field.parent.enterKeyClicked()
 }

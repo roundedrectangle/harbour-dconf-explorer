@@ -22,6 +22,10 @@ Loader {
     property var value
     signal setValue(var value)
 
+    property bool enterKeyEnabled: true
+    property url enterKeyIconSource
+    signal enterKeyClicked
+
     Component {
         id: boolComponent
         TextSwitch {

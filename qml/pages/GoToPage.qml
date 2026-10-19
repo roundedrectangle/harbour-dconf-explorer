@@ -39,6 +39,10 @@ Dialog {
             text: '/'
             onTextChanged: if (text.indexOf('/') != 0) text = '/' + text
             focus: true
+
+            EnterKey.enabled: canAccept
+            EnterKey.iconSource: "image://theme/icon-m-enter-accept"
+            EnterKey.onClicked: accept()
         }
     }
 }

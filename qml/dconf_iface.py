@@ -49,7 +49,7 @@ dconf.dconf_client_unwatch_fast.restype = None
 gobject.g_signal_connect_data.argtypes = [c_void_p, c_char_p, c_void_p, c_void_p, c_void_p, c_int]
 gobject.g_signal_connect_data.restype = ctypes.c_ulong
 
-# GLib Main Loop functions to keep the asynchronous D-Bus socket reading alive
+# glib main loop handling
 glib.g_main_loop_new.argtypes = [c_void_p, c_int]
 glib.g_main_loop_new.restype = c_void_p
 glib.g_main_loop_run.argtypes = [c_void_p]

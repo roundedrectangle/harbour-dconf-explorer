@@ -14,7 +14,7 @@ Dialog {
     // Do not make it depend on isFolder to avoid race conditions
     acceptDestinationProperties: ({
         path: normalizedPath,
-        fromGoTo: true // Force to never close
+        fromGoTo: true // force to never close (and to not call py.remove() when not needed for ListPage)
     })
 
     onAcceptPendingChanged: if (acceptPending) acceptDestinationInstance.path = normalizedPath

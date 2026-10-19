@@ -121,7 +121,7 @@ Dialog {
             Loader {
                 width: parent.width
                 active: creating
-                focus: true // needed to pass the focus to TextField (and inner QML TextInput)
+                focus: true // needed to make TextField focus work (and inner QML TextInput)
                 sourceComponent: Component {
                     TextField {
                         label: qsTr("Key")
@@ -129,7 +129,7 @@ Dialog {
                         inputMethodHints: Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase
                         focus: true
                         onTextChanged: {
-                            // Remove any slashes at start, and replace duplicate ones with 1
+                            // Remove any slashes at start, remove duplicate ones
                             var newKey = appWindow.normalizePath(text.replace(/^\/+/, ''))
                             page.key = newKey ? (createPath + newKey) : ''
                         }

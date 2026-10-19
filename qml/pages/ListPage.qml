@@ -9,9 +9,9 @@ Page {
 
     property string path: '/'
     property bool loading: true
+    property bool fromGoTo
     property string removingKey
     readonly property bool empty: !loading && keysModel.count == 0
-    property bool fromGoTo
     property bool wasAdded: !fromGoTo
 
     property var favoritesRemorse

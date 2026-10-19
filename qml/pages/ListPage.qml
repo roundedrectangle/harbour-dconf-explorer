@@ -110,9 +110,17 @@ Page {
             pageStack.pop()
         }
 
+    Timer {
+        id: scrollToTopTimer
+        interval: 20
+        onTriggered: if (page.status != PageStatus.Active) listView.scrollToTop()
+    }
+    onHaveFavoritesChanged: scrollToTopTimer.restart()
+
     BusyLabel { running: loading }
 
     SilicaListView {
+        id: listView
         anchors.fill: parent
         model: keysModel
         opacity: loading ? 0 : 1
@@ -162,6 +170,8 @@ Page {
 
                         Repeater {
                             model: favorites.value
+                            onItemRemoved: scrollToTopTimer.restart()
+                            onItemAdded: scrollToTopTimer.restart()
                             ConfigurationListItem {
                                 key: modelData
                                 favorite: true

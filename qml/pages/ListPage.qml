@@ -14,6 +14,9 @@ Page {
     property bool fromGoTo
     property bool wasAdded: !fromGoTo
 
+    property var favoritesRemorse
+    readonly property bool haveFavorites: page.path == '/' && !!(favorites.value && favorites.value.length) && !(favoritesRemorse && favoritesRemorse.active)
+
     ListModel {
         id: keysModel
 
@@ -117,6 +120,11 @@ Page {
 
         PullDownMenu {
             MenuItem {
+                visible: haveFavorites
+                text: qsTr("Clear favorites")
+                onClicked: favoritesRemorse = Remorse.popupAction(page, qsTr("Cleared favorites"), function() { favorites.value = [] })
+            }
+            MenuItem {
                 visible: path == '/'
                 text: qsTr("Go to…")
                 onClicked: pageStack.push(Qt.resolvedUrl("GoToPage.qml"))
@@ -137,14 +145,14 @@ Page {
 
             PageHeader {
                 title: qsTr("DConf Explorer")
-                description: favoritesLoader.active ? '' : path
+                description: haveFavorites ? '' : path
                 descriptionWrapMode: Text.Wrap
             }
 
             Loader {
                 id: favoritesLoader
                 width: parent.width
-                active: path == '/' && !!(favorites.value && favorites.value.length)
+                active: haveFavorites
                 height: status == Loader.Ready ? implicitHeight : 0
                 sourceComponent: Component {
                     Column {

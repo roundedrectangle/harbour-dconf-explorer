@@ -138,6 +138,14 @@
         <source>Pull down to create a new entry</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Clear favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cleared favorites</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TypeContextMenu</name>

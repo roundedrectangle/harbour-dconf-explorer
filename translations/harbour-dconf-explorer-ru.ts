@@ -138,6 +138,14 @@
         <source>Pull down to create a new entry</source>
         <translation>Потяните вниз, чтобы создать запись</translation>
     </message>
+    <message>
+        <source>Clear favorites</source>
+        <translation>Очистить избранные</translation>
+    </message>
+    <message>
+        <source>Cleared favorites</source>
+        <translation>Избранные очищены</translation>
+    </message>
 </context>
 <context>
     <name>TypeContextMenu</name>
